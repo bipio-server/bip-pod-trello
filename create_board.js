@@ -109,9 +109,9 @@ CreateBoard.prototype.getSchema = function() {
     },
     "exports": {
       "properties" : {
-        "outstring" : {
+        "id" : {
           "type" : "string",
-          "description" : "String goes out"
+          "description" : "Board ID"
         }
       }
     }
