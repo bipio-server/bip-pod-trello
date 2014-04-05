@@ -17,8 +17,15 @@ pod icon into the server cdn
 
 Manually restart the bipio server at your convenience.
 
-
 [Bipio Docs](https://bip.io/docs/pods/trello)
+
+## Registering Your App
+
+Generate your Trello API keys at <a href="https://trello.com/1/appKey/generate">https://trello.com/1/appKey/generate</a>
+
+## Advisories
+
+ * Be careful when creating Boards!  Trello does not support Board deletion.
 
 ## License
 

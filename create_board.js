@@ -18,9 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var https = require('https'),
-  querystring = require('querystring');
-  
 function CreateBoard(podConfig) {
   this.name = 'create_board';
   this.description = 'Create A Board',
@@ -45,32 +42,33 @@ CreateBoard.prototype.getSchema = function() {
           "type" :  "string",
           "description" : "Permission Level",
           oneOf : [
-            {
-              "$ref" : "#/config/definitions/prefs_permissionLevel"
-            }
+          {
+            "$ref" : "#/config/definitions/prefs_permissionLevel"
+          }
           ]
         },
         "prefs_comments" : {
           "type" :  "string",
           "description" : "Comment Preferences",
           oneOf : [
-            {
-              "$ref" : "#/config/definitions/prefs_comments"
-            }
+          {
+            "$ref" : "#/config/definitions/prefs_comments"
+          }
           ]
         },
         "prefs_invitations" : {
           "type" :  "string",
           "description" : "Invitations Preferences",
           oneOf : [
-            {
-              "$ref" : "#/config/definitions/prefs_invitations"
-            }
+          {
+            "$ref" : "#/config/definitions/prefs_invitations"
+          }
           ]
         },
         "prefs_selfJoin" : {
           "type" :  "boolean",
-          "description" : "Self Join"
+          "description" : "Self Join",
+          "default" : false
         },
       },
       "definitions" : {
@@ -103,9 +101,8 @@ CreateBoard.prototype.getSchema = function() {
         "description" : {
           "type" :  "string",
           "description" : "Description"
-        },
-        
-      }      
+        }
+      }
     },
     "exports": {
       "properties" : {
@@ -119,37 +116,16 @@ CreateBoard.prototype.getSchema = function() {
 }
 
 CreateBoard.prototype.invoke = function(imports, channel, sysImports, contentParts, next) {
-  var host = 'api.trello.com',
-    config = this.pod.getConfig();
-    
-  if (imports.name) {    
-    var query = {
-      token : sysImports.auth.oauth.token,
-      key : config.oauth.consumerKey
-    },
-    options = {
-      host: host,
-      port: 443,
-      path: '/1/boards?' +  querystring.stringify(query) + '&' + querystring.stringify(imports),
-      method: 'POST'
-    }
-    
-    var req = https.request(options, function(res) {
-      res.setEncoding('utf8');
-      var data = "";
-      res.on('data', function(d) {
-        data += d;
-      });
-      res.on("end", function() {
-        if(res.statusCode !== 200) {
-          next(data);
-        } else {
-          next(false, JSON.parse(data));
-        }
-      });
-    });    
-    
-    req.end();
+  if (imports.name) {
+    this.pod.trelloRequestParsed(
+      'boards',
+      imports ,
+      sysImports,
+      function(err, data) {
+        next(err, data);
+      },
+      'POST'
+    );
   }
 }
 
