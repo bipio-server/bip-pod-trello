@@ -20,7 +20,8 @@
  */
 var Pod = require('bip-pod'),
 https = require('https'),
-querystring = require('querystring');
+querystring = require('querystring'),
+Q = require('q'),
 
 Trello = new Pod({
   name : 'trello',
@@ -43,6 +44,7 @@ Trello = new Pod({
       description : 'Retrieve Boards',
       contentType : DEFS.CONTENTTYPE_JSON
     },
+    
     'board_lists' : {
       description : 'Retrieve Lists For a Board',
       contentType : DEFS.CONTENTTYPE_JSON,
@@ -53,11 +55,15 @@ Trello = new Pod({
           oneOf : [
             {
               '$ref' : '/renderers/member_boards#{id}'
-            }            
+            }
           ],
           required : true
         }
       }
+    },
+    'all_board_lists' : {
+      description : 'Retrieve All Lists For Active Boards',
+      contentType : DEFS.CONTENTTYPE_JSON
     }
   }
 });
@@ -108,6 +114,7 @@ Trello.trelloRequestParsed = function(path, params, sysImports, next, method) {
 
 Trello.rpc = function(action, method, sysImports, options, channel, req, res) {
   var podConfig = this.getConfig(),
+  self = this,
   profile = JSON.parse(sysImports.auth.oauth.profile),
   opts;
 
@@ -130,6 +137,63 @@ Trello.rpc = function(action, method, sysImports, options, channel, req, res) {
         tRes.pipe(res);
       }
     );
+
+  // we don't have a schema client that can follow refs from
+  // boards > lists hierarchically, so need to cheat a litte...
+  } else if (method == 'all_board_lists') {
+
+    self.trelloRequestParsed(
+      'members/' + profile.id + '/boards',
+      {},
+      sysImports,
+      function(err, boards) {
+        if (err) {
+          res.send(err, 500);
+          res.end();
+        } else {
+          var promises = [],
+            activeLists = [];
+
+          for (var i = 0; i < boards.length; i++) {
+            if (!boards[i].closed) {
+              deferred = Q.defer();
+              promises.push(deferred.promise);
+
+              (function(deferred, board, activeLists) {
+                self.trelloRequestParsed(
+                  'boards/' + board.id + '/lists',
+                  {},
+                  sysImports,
+                  function(err, lists) {
+                    if (err) {
+                      deferred.reject();
+                    } else {
+                      // augment the list name with a useful path
+                      for (var i = 0; i < lists.length; i++) {
+                        if (!lists[i].closed) {
+                          lists[i].name_path = board.name + ' > ' + lists[i].name;
+                          activeLists.push(lists[i]);
+                        }
+                      }
+                      deferred.resolve();                    
+                    }
+                  }
+                );  
+              })(deferred, boards[i], activeLists); 
+            }
+          }
+          
+          Q.all(promises).then(
+            function() {
+              res.send(activeLists)
+            },
+            function(err) {
+              res.send(err, 500);
+          });
+        }
+      }
+    );
+
 
   } else {
     this.__proto__.rpc.apply(this, arguments);

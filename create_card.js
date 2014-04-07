@@ -39,11 +39,11 @@ CreateCard.prototype.getSchema = function() {
           "description" : "Default List ID",
           oneOf : [
             {
-              '$ref' : '/renderers/board_lists#{id}'
+              '$ref' : '/renderers/all_board_lists/{id}'
             }            
           ],
           label : {
-            '$ref' : '/renderers/board_lists/{name}'
+            '$ref' : '/renderers/all_board_lists/{name_path}'
           }
         },
         "label" : {
