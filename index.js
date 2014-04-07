@@ -32,10 +32,10 @@ Trello = new Pod({
     "oauth": {
       "consumerKey" : "",
       "consumerSecret" : "",
-      "scopes" : [
-      'read',
-      'write'
-      ]
+      "trelloParams" : {
+        "scope": "read,write",
+        "expiration": "never"
+      }
     }
   },
   'renderers' : {

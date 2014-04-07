@@ -45,8 +45,25 @@ CreateCard.prototype.getSchema = function() {
           label : {
             '$ref' : '/renderers/board_lists/{name}'
           }
+        },
+        "label" : {
+          "type" :  "string",
+          "description" : "Label",
+          oneOf : [
+            {
+              '$ref' : '#/config/definitions/labels'
+            }            
+          ]
         }
-      }      
+      },
+      "definitions" : {
+        "labels" : {
+          "description" : "Permission Level",
+          "enum" : [ "none", "green" , "yellow", "orange", "red", "purple", "blue" ],
+          "enum_label" : [ "none", "Green", "Yellow", "Orange", "Red", "Purple", "Blue"],
+          "default" : "none"
+        }
+      }
     },
     "imports": {
       "properties" : {
@@ -65,6 +82,10 @@ CreateCard.prototype.getSchema = function() {
         "idList" : {
           "type" :  "string",
           "description" : "List ID"
+        },
+        "label" : {
+          "type" : "string",
+          "description" : "Label Color"
         }
       }
     },
@@ -100,6 +121,7 @@ CreateCard.prototype.getSchema = function() {
 }
 
 CreateCard.prototype.invoke = function(imports, channel, sysImports, contentParts, next) {
+  var pod = this.pod;
   if (imports.name) {
     var opts = {
       name : imports.name,
@@ -107,13 +129,18 @@ CreateCard.prototype.invoke = function(imports, channel, sysImports, contentPart
       due : imports.due,
       idList : imports.idList || channel.config.default_list_id
     }
-
-    this.pod.trelloRequestParsed(
+   
+    var label = imports.label || channel.config.label;
+    if (label && 'none' !== label.toLowerCase().trim()) {
+      opts.labels = label;
+    }    
+    
+    pod.trelloRequestParsed(
       'cards',
       opts ,
       sysImports,
       function(err, data) {
-        next(err, data);
+        next(err, data);        
       },
       'POST'
     );
