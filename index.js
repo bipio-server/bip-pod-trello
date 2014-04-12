@@ -205,5 +205,7 @@ Trello.add(require('./create_board.js'));
 Trello.add(require('./create_list.js'));
 Trello.add(require('./create_card.js'));
 
+Trello.add(require('./add_comment.js'));
+
 // -----------------------------------------------------------------------------
 module.exports = Trello;

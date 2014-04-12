@@ -125,11 +125,14 @@ CreateCard.prototype.invoke = function(imports, channel, sysImports, contentPart
   if (imports.name) {
     var opts = {
       name : imports.name,
-      description : imports.description,
-      due : imports.due,
+      desc : imports.description,
       idList : imports.idList || channel.config.default_list_id
     }
    
+    if (imports.due) {
+      opts.due = imports.due;
+    }
+
     var label = imports.label || channel.config.label;
     if (label && 'none' !== label.toLowerCase().trim()) {
       opts.labels = label;
