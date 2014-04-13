@@ -54,6 +54,13 @@ CreateCard.prototype.getSchema = function() {
               '$ref' : '#/config/definitions/labels'
             }            
           ]
+        },
+        "position" : {
+          "type" :  "string",
+          "description" : "Position",
+          oneOf : [{
+            "$ref" : "#/config/definitions/position"
+          }]          
         }
       },
       "definitions" : {
@@ -62,6 +69,12 @@ CreateCard.prototype.getSchema = function() {
           "enum" : [ "none", "green" , "yellow", "orange", "red", "purple", "blue" ],
           "enum_label" : [ "none", "Green", "Yellow", "Orange", "Red", "Purple", "Blue"],
           "default" : "none"
+        },
+        "position" : {
+          "description" : "Position",
+          "enum" : [ "bottom", "top" ],
+          "enum_label" : [ "Bottom", "Top"],
+          "default" : "bottom"
         }
       }
     },
@@ -126,7 +139,8 @@ CreateCard.prototype.invoke = function(imports, channel, sysImports, contentPart
     var opts = {
       name : imports.name,
       desc : imports.description,
-      idList : imports.idList || channel.config.default_list_id
+      idList : imports.idList || channel.config.default_list_id,
+      pos : channel.config.position
     }
    
     if (imports.due) {
