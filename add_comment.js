@@ -48,27 +48,7 @@ AddComment.prototype.getSchema = function() {
       "properties" : {
         "id" : {
           "type" : "string",
-          "description" : "ID"
-        },
-        "name" : {
-          "type" : "string",
-          "description" : "Name"
-        },
-        "closed" : {
-          "type" : "boolean",
-          "description" : "Card Closed"
-        },
-        "url" : {
-          "type" : "boolean",
-          "description" : "Card URL"
-        },
-        "idBoard" : {
-          "type" : "string",
-          "description" : "Board ID"
-        },
-        "pos" : {
-          "type" : "integer",
-          "description" : "Position"
+          "description" : "CommentID"
         }
       }
     }    
