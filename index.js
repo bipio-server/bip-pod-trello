@@ -44,7 +44,7 @@ Trello = new Pod({
       description : 'Retrieve Boards',
       contentType : DEFS.CONTENTTYPE_JSON
     },
-    
+
     'board_lists' : {
       description : 'Retrieve Lists For a Board',
       contentType : DEFS.CONTENTTYPE_JSON,
@@ -53,9 +53,9 @@ Trello = new Pod({
           description : 'Board ID',
           type : 'string',
           oneOf : [
-            {
-              '$ref' : '/renderers/member_boards#{id}'
-            }
+          {
+            '$ref' : '/renderers/member_boards#{id}'
+          }
           ],
           required : true
         }
@@ -63,6 +63,10 @@ Trello = new Pod({
     },
     'all_board_lists' : {
       description : 'Retrieve All Lists For Active Boards',
+      contentType : DEFS.CONTENTTYPE_JSON
+    },
+    'all_organization_members' : {
+      description : 'Retrieve All Members For Your Organizations',
       contentType : DEFS.CONTENTTYPE_JSON
     }
   }
@@ -117,7 +121,7 @@ Trello.rpc = function(action, method, sysImports, options, channel, req, res) {
   self = this,
   profile = JSON.parse(sysImports.auth.oauth.profile),
   opts;
-
+  
   if (method == 'member_boards') {
     this.trelloRequest(
       'members/' + profile.id + '/boards',
@@ -126,7 +130,7 @@ Trello.rpc = function(action, method, sysImports, options, channel, req, res) {
       function(tRes) {
         tRes.pipe(res);
       }
-    );
+      );
 
   } else if (method == 'board_lists') {
     this.trelloRequest(
@@ -136,7 +140,56 @@ Trello.rpc = function(action, method, sysImports, options, channel, req, res) {
       function(tRes) {
         tRes.pipe(res);
       }
-    );
+      );
+
+  } else if (method == 'all_organization_members') {
+
+    self.trelloRequestParsed(
+      'members/' + profile.id + '/organizations',
+      {},
+      sysImports,
+      function(err, orgs) {
+        if (err) {
+          res.send(err, 500);
+          res.end();
+        } else {
+          var promises = [],
+          orgMembers = [];
+
+          for (var i = 0; i < orgs.length; i++) {
+            deferred = Q.defer();
+            promises.push(deferred.promise);
+            (function(deferred, org, members) {
+              self.trelloRequestParsed(
+                'organizations/' + org.id + '/members',
+                {},
+                sysImports,
+                function(err, members) {
+                  if (err) {
+                    deferred.reject();
+                  } else {
+                    for (var j = 0; j < members.length; j++) {
+                      members[j].org_id = org.id;
+                      members[j].org_display_name = org.displayName;
+                      orgMembers.push(members[j]);
+                      
+                      orgMembers.push(members[j]);
+                    }
+                    deferred.resolve();
+                  }
+                });
+            })(deferred, orgs[i], orgMembers);
+          }
+
+          Q.all(promises).then(
+            function() {
+              res.send(orgMembers)
+            },
+            function(err) {
+              res.send(err, 500);
+            });
+        }
+      });
 
   // we don't have a schema client that can follow refs from
   // boards > lists hierarchically, so need to cheat a litte...
@@ -152,7 +205,7 @@ Trello.rpc = function(action, method, sysImports, options, channel, req, res) {
           res.end();
         } else {
           var promises = [],
-            activeLists = [];
+          activeLists = [];
 
           for (var i = 0; i < boards.length; i++) {
             if (!boards[i].closed) {
@@ -175,24 +228,24 @@ Trello.rpc = function(action, method, sysImports, options, channel, req, res) {
                           activeLists.push(lists[i]);
                         }
                       }
-                      deferred.resolve();                    
+                      deferred.resolve();
                     }
                   }
-                );  
-              })(deferred, boards[i], activeLists); 
+                  );
+              })(deferred, boards[i], activeLists);
             }
           }
-          
+
           Q.all(promises).then(
             function() {
               res.send(activeLists)
             },
             function(err) {
               res.send(err, 500);
-          });
+            });
         }
       }
-    );
+      );
 
 
   } else {

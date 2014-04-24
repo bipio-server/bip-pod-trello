@@ -46,6 +46,18 @@ CreateCard.prototype.getSchema = function() {
             '$ref' : '/renderers/all_board_lists/{name_path}'
           }
         },
+        "assigned_member_ids" : {
+          "type" :  "array",
+          "description" : "Assign Members",
+          anyOf : [
+            {
+              '$ref' : '/renderers/all_organization_members/{id}'
+            }            
+          ],
+          label : {
+            '$ref' : '/renderers/all_organization_members/{fullName}'
+          }
+        },
         "label" : {
           "type" :  "string",
           "description" : "Label",
@@ -139,8 +151,19 @@ CreateCard.prototype.invoke = function(imports, channel, sysImports, contentPart
     var opts = {
       name : imports.name,
       desc : imports.description,
-      idList : imports.idList || channel.config.default_list_id,
-      pos : channel.config.position
+      idList : imports.idList || channel.config.default_list_id
+    }
+   
+    if (channel.config.position) {
+      opts.pos = channel.config.position;
+    }
+   
+    if (channel.config.assigned_member_ids) {
+      if (app.helper.isArray(channel.config.assigned_member_ids)) {
+        opts.idMembers = channel.config.assigned_member_ids.join(',');
+      } else {
+        opts.idMembers = channel.config.assigned_member_ids;
+      }
     }
    
     if (imports.due) {
@@ -151,7 +174,7 @@ CreateCard.prototype.invoke = function(imports, channel, sysImports, contentPart
     if (label && 'none' !== label.toLowerCase().trim()) {
       opts.labels = label;
     }    
-    
+
     pod.trelloRequestParsed(
       'cards',
       opts ,
