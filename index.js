@@ -172,8 +172,6 @@ Trello.rpc = function(action, method, sysImports, options, channel, req, res) {
                       members[j].org_id = org.id;
                       members[j].org_display_name = org.displayName;
                       orgMembers.push(members[j]);
-                      
-                      orgMembers.push(members[j]);
                     }
                     deferred.resolve();
                   }
