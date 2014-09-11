@@ -20,8 +20,8 @@
 
 function CreateBoard(podConfig) {
   this.name = 'create_board';
-  this.description = 'Create A Board',
-  this.description_long = 'Creates a New Trello Board',
+  this.title = 'Create A Board',
+  this.description = 'Creates a New Trello Board',
   this.trigger = false;
   this.singleton = false;
   this.auto = false;
@@ -102,7 +102,8 @@ CreateBoard.prototype.getSchema = function() {
           "type" :  "string",
           "description" : "Description"
         }
-      }
+      },
+      "required" : [ "name" ]
     },
     "exports": {
       "properties" : {

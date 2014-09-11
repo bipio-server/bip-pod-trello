@@ -20,8 +20,8 @@
 
 function CreateList(podConfig) {
   this.name = 'create_list';
-  this.description = 'Create A List',
-  this.description_long = 'Adds a List to an existing Board',
+  this.title = 'Create A List',
+  this.description = 'Adds a List to an existing Board',
   this.trigger = false;
   this.singleton = false;
   this.auto = false;
@@ -40,13 +40,13 @@ CreateList.prototype.getSchema = function() {
           oneOf : [
             {
               '$ref' : '/renderers/member_boards#{id}'
-            }            
+            }
           ],
           label : {
             '$ref' : '/renderers/member_boards/{name}'
           }
         }
-      }      
+      }
     },
     "imports": {
       "properties" : {
@@ -58,7 +58,8 @@ CreateList.prototype.getSchema = function() {
           "type" :  "string",
           "description" : "Board ID"
         }
-      }
+      },
+      "required" : [ "name" ]
     },
     "exports": {
       "properties" : {
@@ -83,7 +84,7 @@ CreateList.prototype.getSchema = function() {
           "description" : "Position"
         }
       }
-    }    
+    }
   }
 }
 

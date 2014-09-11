@@ -20,8 +20,8 @@
 
 function AddComment(podConfig) {
   this.name = 'add_comment';
-  this.description = 'Add A Comment',
-  this.description_long = 'Adds a Comment to a Card',
+  this.title = 'Add A Comment',
+  this.description = 'Adds a Comment to a Card',
   this.trigger = false;
   this.singleton = false;
   this.auto = false;
@@ -42,7 +42,8 @@ AddComment.prototype.getSchema = function() {
           "type" :  "string",
           "description" : "Comment Text"
         }
-      }
+      },
+      "required" : [ "text" ]
     },
     "exports": {
       "properties" : {
@@ -51,7 +52,7 @@ AddComment.prototype.getSchema = function() {
           "description" : "CommentID"
         }
       }
-    }    
+    }
   }
 }
 
@@ -65,7 +66,7 @@ AddComment.prototype.invoke = function(imports, channel, sysImports, contentPart
       },
       sysImports,
       function(err, data) {
-        next(err, data);        
+        next(err, data);
       },
       'POST'
     );

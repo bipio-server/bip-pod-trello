@@ -20,8 +20,8 @@
 
 function CreateCard(podConfig) {
   this.name = 'create_card';
-  this.description = 'Create A Card',
-  this.description_long = 'Adds a Card to an existing List',
+  this.title = 'Create A Card',
+  this.description = 'Adds a Card to an existing List',
   this.trigger = false;
   this.singleton = false;
   this.auto = false;
@@ -40,7 +40,7 @@ CreateCard.prototype.getSchema = function() {
           oneOf : [
             {
               '$ref' : '/renderers/all_board_lists/{id}'
-            }            
+            }
           ],
           label : {
             '$ref' : '/renderers/all_board_lists/{name_path}'
@@ -52,7 +52,7 @@ CreateCard.prototype.getSchema = function() {
           anyOf : [
             {
               '$ref' : '/renderers/all_organization_members/{id}'
-            }            
+            }
           ],
           label : {
             '$ref' : '/renderers/all_organization_members/{fullName}'
@@ -64,7 +64,7 @@ CreateCard.prototype.getSchema = function() {
           oneOf : [
             {
               '$ref' : '#/config/definitions/labels'
-            }            
+            }
           ]
         },
         "position" : {
@@ -72,7 +72,7 @@ CreateCard.prototype.getSchema = function() {
           "description" : "Position",
           oneOf : [{
             "$ref" : "#/config/definitions/position"
-          }]          
+          }]
         }
       },
       "definitions" : {
@@ -112,7 +112,8 @@ CreateCard.prototype.getSchema = function() {
           "type" : "string",
           "description" : "Label Color"
         }
-      }
+      },
+      "required" : [ "name" ]
     },
     "exports": {
       "properties" : {
@@ -141,7 +142,7 @@ CreateCard.prototype.getSchema = function() {
           "description" : "Position"
         }
       }
-    }    
+    }
   }
 }
 
@@ -153,11 +154,11 @@ CreateCard.prototype.invoke = function(imports, channel, sysImports, contentPart
       desc : imports.description,
       idList : imports.idList || channel.config.default_list_id
     }
-   
+
     if (channel.config.position) {
       opts.pos = channel.config.position;
     }
-   
+
     if (channel.config.assigned_member_ids) {
       if (app.helper.isArray(channel.config.assigned_member_ids)) {
         opts.idMembers = channel.config.assigned_member_ids.join(',');
@@ -165,7 +166,7 @@ CreateCard.prototype.invoke = function(imports, channel, sysImports, contentPart
         opts.idMembers = channel.config.assigned_member_ids;
       }
     }
-   
+
     if (imports.due) {
       opts.due = imports.due;
     }
@@ -173,14 +174,14 @@ CreateCard.prototype.invoke = function(imports, channel, sysImports, contentPart
     var label = imports.label || channel.config.label;
     if (label && 'none' !== label.toLowerCase().trim()) {
       opts.labels = label;
-    }    
+    }
 
     pod.trelloRequestParsed(
       'cards',
       opts ,
       sysImports,
       function(err, data) {
-        next(err, data);        
+        next(err, data);
       },
       'POST'
     );

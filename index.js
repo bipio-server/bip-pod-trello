@@ -25,8 +25,8 @@ Q = require('q'),
 
 Trello = new Pod({
   name : 'trello',
-  description : 'Trello',
-  description_long : '<a href="https://www.trello.com">Trello</a> is the easiest way to organize anything with anyone.',
+  title : 'Trello',
+  description : '<a href="https://www.trello.com">Trello</a> is the easiest way to organize anything with anyone.',
   authType : 'oauth',
   passportStrategy : require('passport-trello').Strategy,
   config : {
@@ -121,7 +121,7 @@ Trello.rpc = function(action, method, sysImports, options, channel, req, res) {
   self = this,
   profile = JSON.parse(sysImports.auth.oauth.profile),
   opts;
-  
+
   if (method == 'member_boards') {
     this.trelloRequest(
       'members/' + profile.id + '/boards',
