@@ -1,6 +1,6 @@
 {
   "name": "bip-pod-trello",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Trello Pod for Bipio",
   "keywords": [
     "bip",
@@ -23,7 +23,6 @@
   ],
   "main": ".",
   "dependencies": {
-    "bip-pod": ">=0.0.1",
     "passport-trello": "~0.1.4",
     "q": "^1.0.1"
   },
