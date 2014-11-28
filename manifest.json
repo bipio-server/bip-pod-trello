@@ -1,8 +1,8 @@
 {
   "name": "trello",
   "title": "Trello",
-  "description": "<a href=\"https://www.trello.com\">Trello</a> is the easiest way to organize anything with anyone.",
-  "url": "",
+  "description": "Trello is the easiest way to organize anything with anyone.",
+  "url": "https://www.trello.com",
   "trackDuplicates": false,
   "config": {
     "oauth": {

@@ -18,59 +18,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function AddComment(podConfig) {
-  this.name = 'add_comment';
-  this.title = 'Add A Comment',
-  this.description = 'Adds a Comment to a Card',
-  this.trigger = false;
-  this.singleton = false;
-  this.auto = false;
-  this.podConfig = podConfig;
-}
+function AddComment() {}
 
 AddComment.prototype = {};
 
-AddComment.prototype.getSchema = function() {
-  return {
-    "imports": {
-      "properties" : {
-        "card_id" : {
-          "type" :  "string",
-          "description" : "Card ID"
-        },
-        "text" : {
-          "type" :  "string",
-          "description" : "Comment Text"
-        }
-      },
-      "required" : [ "text" ]
-    },
-    "exports": {
-      "properties" : {
-        "id" : {
-          "type" : "string",
-          "description" : "CommentID"
-        }
-      }
-    }
-  }
-}
-
 AddComment.prototype.invoke = function(imports, channel, sysImports, contentParts, next) {
   var pod = this.pod;
-  if (imports.text) {
-    pod.trelloRequestParsed(
-      'cards/' + imports.card_id + '/actions/comments',
-      {
-        text : imports.text
-      },
-      sysImports,
-      function(err, data) {
-        next(err, data);
-      },
-      'POST'
-    );
-  }
+  pod.trelloRequestParsed(
+    'cards/' + imports.card_id + '/actions/comments',
+    {
+      text : imports.text
+    },
+    sysImports,
+    function(err, data) {
+      next(err, data);
+    },
+    'POST'
+  );
 }
 
 // -----------------------------------------------------------------------------

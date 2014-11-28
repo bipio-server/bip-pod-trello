@@ -18,92 +18,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function CreateList(podConfig) {
-  this.name = 'create_list';
-  this.title = 'Create A List',
-  this.description = 'Adds a List to an existing Board',
-  this.trigger = false;
-  this.singleton = false;
-  this.auto = false;
-  this.podConfig = podConfig;
-}
+function CreateList() {}
 
 CreateList.prototype = {};
 
-CreateList.prototype.getSchema = function() {
-  return {
-    "config": {
-      "properties" : {
-        "default_board_id" : {
-          "type" :  "string",
-          "description" : "Default Board ID",
-          oneOf : [
-            {
-              '$ref' : '/renderers/member_boards#{id}'
-            }
-          ],
-          label : {
-            '$ref' : '/renderers/member_boards/{name}'
-          }
-        }
-      }
-    },
-    "imports": {
-      "properties" : {
-        "name" : {
-          "type" :  "string",
-          "description" : "List Name"
-        },
-        "idBoard" : {
-          "type" :  "string",
-          "description" : "Board ID"
-        }
-      },
-      "required" : [ "name" ]
-    },
-    "exports": {
-      "properties" : {
-        "id" : {
-          "type" : "string",
-          "description" : "ID"
-        },
-        "name" : {
-          "type" : "string",
-          "description" : "Name"
-        },
-        "closed" : {
-          "type" : "boolean",
-          "description" : "List Closed"
-        },
-        "idBoard" : {
-          "type" : "string",
-          "description" : "Board ID"
-        },
-        "pos" : {
-          "type" : "integer",
-          "description" : "Position"
-        }
-      }
-    }
-  }
-}
-
 CreateList.prototype.invoke = function(imports, channel, sysImports, contentParts, next) {
-  if (imports.name) {
-    var opts = {
-      name : imports.name,
-      idBoard : imports.idBoard || channel.config.default_board_id
-    }
-    this.pod.trelloRequestParsed(
-      'lists',
-      opts ,
-      sysImports,
-      function(err, data) {
-        next(err, data);
-      },
-      'POST'
-    );
+  var opts = {
+    name : imports.name,
+    idBoard : imports.idBoard || channel.config.default_board_id
   }
+  this.pod.trelloRequestParsed(
+    'lists',
+    opts ,
+    sysImports,
+    function(err, data) {
+      next(err, data);
+    },
+    'POST'
+  );
 }
 
 // -----------------------------------------------------------------------------

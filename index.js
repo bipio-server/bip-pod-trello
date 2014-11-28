@@ -23,54 +23,7 @@ https = require('https'),
 querystring = require('querystring'),
 Q = require('q'),
 
-Trello = new Pod({
-  name : 'trello',
-  title : 'Trello',
-  description : '<a href="https://www.trello.com">Trello</a> is the easiest way to organize anything with anyone.',
-  authType : 'oauth',
-  passportStrategy : require('passport-trello').Strategy,
-  config : {
-    "oauth": {
-      "consumerKey" : "",
-      "consumerSecret" : "",
-      "trelloParams" : {
-        "scope": "read,write",
-        "expiration": "never"
-      }
-    }
-  },
-  'renderers' : {
-    'member_boards' : {
-      description : 'Retrieve Boards',
-      contentType : DEFS.CONTENTTYPE_JSON
-    },
-
-    'board_lists' : {
-      description : 'Retrieve Lists For a Board',
-      contentType : DEFS.CONTENTTYPE_JSON,
-      properties : {
-        board_id : {
-          description : 'Board ID',
-          type : 'string',
-          oneOf : [
-          {
-            '$ref' : '/renderers/member_boards#{id}'
-          }
-          ],
-          required : true
-        }
-      }
-    },
-    'all_board_lists' : {
-      description : 'Retrieve All Lists For Active Boards',
-      contentType : DEFS.CONTENTTYPE_JSON
-    },
-    'all_organization_members' : {
-      description : 'Retrieve All Members For Your Organizations',
-      contentType : DEFS.CONTENTTYPE_JSON
-    }
-  }
-});
+Trello = new Pod();
 
 Trello.getParameters = function(path, query, sysImports) {
   var config = this.getConfig();
@@ -250,13 +203,6 @@ Trello.rpc = function(action, method, sysImports, options, channel, req, res) {
     this.__proto__.rpc.apply(this, arguments);
   }
 }
-
-// Include any actions
-Trello.add(require('./create_board.js'));
-Trello.add(require('./create_list.js'));
-Trello.add(require('./create_card.js'));
-
-Trello.add(require('./add_comment.js'));
 
 // -----------------------------------------------------------------------------
 module.exports = Trello;
