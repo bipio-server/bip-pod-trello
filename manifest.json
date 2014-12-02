@@ -49,7 +49,7 @@
           "type": "string",
           "oneOf": [
             {
-              "$ref": "/renderers/member_boards#{id}"
+              "$ref": "/rpcs/member_boards#{id}"
             }
           ],
           "required": true
@@ -203,11 +203,11 @@
             "description": "Default Board ID",
             "oneOf": [
               {
-                "$ref": "/renderers/member_boards#{id}"
+                "$ref": "/rpcs/member_boards#{id}"
               }
             ],
             "label": {
-              "$ref": "/renderers/member_boards/{name}"
+              "$ref": "/rpcs/member_boards/{name}"
             }
           }
         },
@@ -270,11 +270,11 @@
             "description": "Default List ID",
             "oneOf": [
               {
-                "$ref": "/renderers/all_board_lists/{id}"
+                "$ref": "/rpcs/all_board_lists/{id}"
               }
             ],
             "label": {
-              "$ref": "/renderers/all_board_lists/{name_path}"
+              "$ref": "/rpcs/all_board_lists/{name_path}"
             }
           },
           "assigned_member_ids": {
@@ -282,11 +282,11 @@
             "description": "Assign Members",
             "anyOf": [
               {
-                "$ref": "/renderers/all_organization_members/{id}"
+                "$ref": "/rpcs/all_organization_members/{id}"
               }
             ],
             "label": {
-              "$ref": "/renderers/all_organization_members/{fullName}"
+              "$ref": "/rpcs/all_organization_members/{fullName}"
             }
           },
           "label": {
