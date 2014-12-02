@@ -28,7 +28,7 @@
       "user_id": {
         "type": "string",
         "title": "User ID"
-      },
+      }
     },
     "disposition": [
       "access_token",
