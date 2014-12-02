@@ -15,7 +15,26 @@
     }
   },
   "auth": {
-    "strategy": "oauth"
+    "strategy": "oauth",
+    "properties": {
+      "access_token": {
+        "type": "string",
+        "title": "Access Token"
+      },
+      "consumerKey": {
+        "type": "string",
+        "title": "Consumer Key"
+      },
+      "user_id": {
+        "type": "string",
+        "title": "User ID"
+      },
+    },
+    "disposition": [
+      "access_token",
+      "consumerKey",
+      "user_id"
+    ]
   },
   "rpcs": {
     "member_boards": {

@@ -29,8 +29,8 @@ Trello.getParameters = function(path, query, sysImports) {
   var config = this.getConfig();
 
   var auth = {
-    token : sysImports.auth.oauth.token,
-    key : config.oauth.consumerKey
+    token : sysImports.auth.oauth.access_token,
+    key : sysImports.auth.oauth.consumerKey
   };
 
   return '/1/'
@@ -72,12 +72,12 @@ Trello.trelloRequestParsed = function(path, params, sysImports, next, method) {
 Trello.rpc = function(action, method, sysImports, options, channel, req, res) {
   var podConfig = this.getConfig(),
   self = this,
-  profile = JSON.parse(sysImports.auth.oauth.profile),
+  uid = (sysImports.auth.oauth.user_id || JSON.parse(sysImports.auth.oauth.profile).id),
   opts;
 
   if (method == 'member_boards') {
     this.trelloRequest(
-      'members/' + profile.id + '/boards',
+      'members/' + uid + '/boards',
       {},
       sysImports,
       function(tRes) {
@@ -98,7 +98,7 @@ Trello.rpc = function(action, method, sysImports, options, channel, req, res) {
   } else if (method == 'all_organization_members') {
 
     self.trelloRequestParsed(
-      'members/' + profile.id + '/organizations',
+      'members/' + uid + '/organizations',
       {},
       sysImports,
       function(err, orgs) {
@@ -147,7 +147,7 @@ Trello.rpc = function(action, method, sysImports, options, channel, req, res) {
   } else if (method == 'all_board_lists') {
 
     self.trelloRequestParsed(
-      'members/' + profile.id + '/boards',
+      'members/' + uid + '/boards',
       {},
       sysImports,
       function(err, boards) {
