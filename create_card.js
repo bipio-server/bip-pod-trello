@@ -36,7 +36,7 @@ CreateCard.prototype.invoke = function(imports, channel, sysImports, contentPart
   }
 
   if (channel.config.assigned_member_ids) {
-    if (app.helper.isArray(channel.config.assigned_member_ids)) {
+    if (this.$resource.helper.isArray(channel.config.assigned_member_ids)) {
       opts.idMembers = channel.config.assigned_member_ids.join(',');
     } else {
       opts.idMembers = channel.config.assigned_member_ids;
