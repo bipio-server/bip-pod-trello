@@ -75,39 +75,39 @@
         "properties": {
           "id_organization": {
             "type": "string",
-            "description": "Organization ID"
+            "title": "Organization ID"
           },
           "prefs_permissionLevel": {
             "type": "string",
-            "description": "Permission Level",
             "oneOf": [
               {
                 "$ref": "#/config/definitions/prefs_permissionLevel"
               }
-            ]
+            ],
+            "title": "Permission Level"
           },
           "prefs_comments": {
             "type": "string",
-            "description": "Comment Preferences",
             "oneOf": [
               {
                 "$ref": "#/config/definitions/prefs_comments"
               }
-            ]
+            ],
+            "title": "Comment Preferences"
           },
           "prefs_invitations": {
             "type": "string",
-            "description": "Invitations Preferences",
             "oneOf": [
               {
                 "$ref": "#/config/definitions/prefs_invitations"
               }
-            ]
+            ],
+            "title": "Invitations Preferences"
           },
           "prefs_selfJoin": {
             "type": "boolean",
-            "description": "Self Join",
-            "default": false
+            "default": false,
+            "title": "Self Join"
           }
         },
         "definitions": {
@@ -168,7 +168,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "Board ID"
+            "title": "Board ID"
           }
         }
       },
@@ -176,11 +176,11 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name"
+            "title": "Name"
           },
           "description": {
             "type": "string",
-            "description": "Description"
+            "title": "Description"
           }
         },
         "required": [
@@ -200,7 +200,6 @@
         "properties": {
           "default_board_id": {
             "type": "string",
-            "description": "Default Board ID",
             "oneOf": [
               {
                 "$ref": "/rpcs/member_boards#{id}"
@@ -208,7 +207,8 @@
             ],
             "label": {
               "$ref": "/rpcs/member_boards/{name}"
-            }
+            },
+            "title": "Default Board ID"
           }
         },
         "disposition": [
@@ -219,23 +219,23 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "ID"
+            "title": "ID"
           },
           "name": {
             "type": "string",
-            "description": "Name"
+            "title": "Name"
           },
           "closed": {
             "type": "boolean",
-            "description": "List Closed"
+            "title": "List Closed"
           },
           "idBoard": {
             "type": "string",
-            "description": "Board ID"
+            "title": "Board ID"
           },
           "pos": {
             "type": "integer",
-            "description": "Position"
+            "title": "Position"
           }
         }
       },
@@ -243,11 +243,11 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "List Name"
+            "title": "List Name"
           },
           "idBoard": {
             "type": "string",
-            "description": "Board ID"
+            "title": "Board ID"
           }
         },
         "required": [
@@ -267,7 +267,6 @@
         "properties": {
           "default_list_id": {
             "type": "string",
-            "description": "Default List ID",
             "oneOf": [
               {
                 "$ref": "/rpcs/all_board_lists/{id}"
@@ -275,11 +274,11 @@
             ],
             "label": {
               "$ref": "/rpcs/all_board_lists/{name_path}"
-            }
+            },
+            "title": "Default List ID"
           },
           "assigned_member_ids": {
             "type": "array",
-            "description": "Assign Members",
             "anyOf": [
               {
                 "$ref": "/rpcs/all_organization_members/{id}"
@@ -287,25 +286,26 @@
             ],
             "label": {
               "$ref": "/rpcs/all_organization_members/{fullName}"
-            }
+            },
+            "title": "Assign Members"
           },
           "label": {
             "type": "string",
-            "description": "Label",
             "oneOf": [
               {
                 "$ref": "#/config/definitions/labels"
               }
-            ]
+            ],
+            "title": "Label"
           },
           "position": {
             "type": "string",
-            "description": "Position",
             "oneOf": [
               {
                 "$ref": "#/config/definitions/position"
               }
-            ]
+            ],
+            "title": "Position"
           }
         },
         "definitions": {
@@ -355,27 +355,27 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "ID"
+            "title": "ID"
           },
           "name": {
             "type": "string",
-            "description": "Name"
+            "title": "Name"
           },
           "closed": {
             "type": "boolean",
-            "description": "Card Closed"
+            "title": "Card Closed"
           },
           "url": {
             "type": "boolean",
-            "description": "Card URL"
+            "title": "Card URL"
           },
           "idBoard": {
             "type": "string",
-            "description": "Board ID"
+            "title": "Board ID"
           },
           "pos": {
             "type": "integer",
-            "description": "Position"
+            "title": "Position"
           }
         }
       },
@@ -383,23 +383,23 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name"
+            "title": "Name"
           },
           "description": {
             "type": "string",
-            "description": "Description"
+            "title": "Description"
           },
           "due": {
             "type": "date",
-            "description": "Due"
+            "title": "Due"
           },
           "idList": {
             "type": "string",
-            "description": "List ID"
+            "title": "List ID"
           },
           "label": {
             "type": "string",
-            "description": "Label Color"
+            "title": "Label Color"
           }
         },
         "required": [
@@ -426,7 +426,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "CommentID"
+            "title": "CommentID"
           }
         }
       },
@@ -434,11 +434,11 @@
         "properties": {
           "card_id": {
             "type": "string",
-            "description": "Card ID"
+            "title": "Card ID"
           },
           "text": {
             "type": "string",
-            "description": "Comment Text"
+            "title": "Comment Text"
           }
         },
         "required": [
