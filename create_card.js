@@ -28,18 +28,18 @@ CreateCard.prototype.invoke = function(imports, channel, sysImports, contentPart
   var opts = {
     name : imports.name,
     desc : imports.description,
-    idList : imports.idList || channel.config.default_list_id
+    idList : imports.idList || imports.default_list_id
   }
 
-  if (channel.config.position) {
-    opts.pos = channel.config.position;
+  if (imports.position) {
+    opts.pos = imports.position;
   }
 
-  if (channel.config.assigned_member_ids) {
-    if (this.$resource.helper.isArray(channel.config.assigned_member_ids)) {
-      opts.idMembers = channel.config.assigned_member_ids.join(',');
+  if (imports.assigned_member_ids) {
+    if (this.$resource.helper.isArray(imports.assigned_member_ids)) {
+      opts.idMembers = imports.assigned_member_ids.join(',');
     } else {
-      opts.idMembers = channel.config.assigned_member_ids;
+      opts.idMembers = imports.assigned_member_ids;
     }
   }
 
@@ -47,7 +47,7 @@ CreateCard.prototype.invoke = function(imports, channel, sysImports, contentPart
     opts.due = imports.due;
   }
 
-  var label = imports.label || channel.config.label;
+  var label = imports.label;
   if (label && 'none' !== label.toLowerCase().trim()) {
     opts.labels = label;
   }
