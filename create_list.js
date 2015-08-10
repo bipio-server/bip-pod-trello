@@ -25,7 +25,7 @@ CreateList.prototype = {};
 CreateList.prototype.invoke = function(imports, channel, sysImports, contentParts, next) {
   var opts = {
     name : imports.name,
-    idBoard : imports.idBoard || imports.default_board_id
+    idBoard : imports.default_board_id
   }
   this.pod.trelloRequestParsed(
     'lists',

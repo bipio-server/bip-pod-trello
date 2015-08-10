@@ -211,6 +211,9 @@
             "title": "Default Board ID"
           }
         },
+         "required": [
+          "default_board_id"
+        ],
         "disposition": [
           "default_board_id"
         ]
@@ -244,18 +247,13 @@
           "name": {
             "type": "string",
             "title": "List Name"
-          },
-          "idBoard": {
-            "type": "string",
-            "title": "Board ID"
           }
         },
         "required": [
           "name"
         ],
         "disposition": [
-          "name",
-          "idBoard"
+          "name"
         ]
       }
     },
