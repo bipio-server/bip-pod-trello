@@ -344,6 +344,9 @@
             "default": "bottom"
           }
         },
+        "required": [
+          "default_list_id"
+        ],
         "disposition": [
           "default_list_id",
           "assigned_member_ids",
@@ -393,10 +396,6 @@
             "type": "date",
             "title": "Due"
           },
-          "idList": {
-            "type": "string",
-            "title": "List ID"
-          },
           "label": {
             "type": "string",
             "title": "Label Color"
@@ -409,7 +408,6 @@
           "name",
           "description",
           "due",
-          "idList",
           "label"
         ]
       }

@@ -28,7 +28,7 @@ CreateCard.prototype.invoke = function(imports, channel, sysImports, contentPart
   var opts = {
     name : imports.name,
     desc : imports.description,
-    idList : imports.idList || imports.default_list_id
+    idList : imports.default_list_id
   }
 
   if (imports.position) {
