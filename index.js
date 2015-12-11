@@ -25,6 +25,10 @@ Q = require('q'),
 
 Trello = new Pod();
 
+Trello.profileReprOAuth = function(profile) {
+  return profile.fullName;
+}
+
 Trello.getParameters = function(path, query, sysImports) {
   var config = this.getConfig();
 
