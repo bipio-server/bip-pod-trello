@@ -15,12 +15,7 @@
   "bugs": {
     "url": "http://github.com/bipio-server/bip-pod-trello/issues"
   },
-  "licenses": [
-    {
-      "type": "GNU GPLv3",
-      "url": "http://www.gnu.org/copyleft/gpl.html"
-    }
-  ],
+  "license": "Apache-2.0",
   "main": ".",
   "dependencies": {
     "passport-trello": "~0.1.4",
